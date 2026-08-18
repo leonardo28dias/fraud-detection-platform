@@ -1,0 +1,26 @@
+data:
+  raw_path: "data/raw/creditcard.csv"
+  processed_path: "data/processed/"
+  test_size: 0.15
+  val_size: 0.15
+  target_col: "Class"
+  time_col: "Time"
+
+model:
+  artifact_dir: "models/"
+  type: "xgboost"
+  params:
+    n_estimators: 200
+    max_depth: 4
+    learning_rate: 0.05
+    scale_pos_weight: 1
+    random_state: 42
+    n_jobs: -1
+
+business_cost:
+  false_positive_cost: 10.0  # Cost of manual review
+  false_negative_multiplier: 1.0 # Multiplier on transaction amount
+
+api:
+  host: "0.0.0.0"
+  port: 8000
