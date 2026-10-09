@@ -7,20 +7,44 @@ data:
   time_col: "Time"
 
 model:
-  artifact_dir: "models/"
   type: "xgboost"
+  artifact_dir: "models/"
   params:
     n_estimators: 200
     max_depth: 4
     learning_rate: 0.05
-    scale_pos_weight: 1
     random_state: 42
     n_jobs: -1
+  # scale_pos_weight is computed dynamically from training data (see trainer.py)
+  # Do NOT hardcode it here — it depends on the class ratio in your train split.
+
+  # Baseline model for comparison
+  baseline:
+    type: "logistic_regression"
+    params:
+      max_iter: 1000
+      random_state: 42
+      class_weight: "balanced"
+
+  # Hyperparameter tuning (small grid to keep runtime reasonable)
+  tune:
+    enabled: true
+    cv_folds: 3
+    scoring: "average_precision"
+    param_grid:
+      max_depth: [3, 5]
+      learning_rate: [0.05, 0.1]
+      n_estimators: [100, 200]
+      subsample: [0.8, 1.0]
 
 business_cost:
-  false_positive_cost: 10.0  # Cost of manual review
-  false_negative_multiplier: 1.0 # Multiplier on transaction amount
+  false_positive_cost: 10.0
+  false_negative_multiplier: 1.0
 
 api:
   host: "0.0.0.0"
   port: 8000
+
+reporting:
+  figure_dpi: 120
+  figure_size: [10, 6]

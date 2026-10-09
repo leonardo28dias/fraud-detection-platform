@@ -10,4 +10,8 @@ models/*
 !models/.gitkeep
 reports/*
 !reports/.gitkeep
+results/
+benchmarks/
+docs/
+scripts/start_api.sh
 .ipynb_checkpoints/

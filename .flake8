@@ -1,0 +1,12 @@
+[flake8]
+max-line-length = 88
+extend-ignore = E203, W503
+
+# The evaluation plotting modules must call matplotlib.use("Agg") before
+# importing matplotlib.pyplot (to run headless on servers). That statement
+# necessarily sits above those imports, which flake8 reports as E402. It is a
+# safe, intentional exception, so we silence E402 for these two files only.
+per-file-ignores =
+    src/evaluate/reporting.py: E402
+    src/evaluate/explainability.py: E402
+    scripts/build_eda_figure.py: E402
